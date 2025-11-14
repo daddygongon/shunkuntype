@@ -2,4 +2,4 @@
 
 require "shunkuntype"
 
-Shunkuntype::Command.run(ARGV)
+Command.run(ARGV)

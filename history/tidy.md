@@ -1,0 +1,226 @@
+daddygongon: submit, plot, review関連の関数を削除
+
+GitHub Copilot: ````ruby
+require 'optparse'
+require "shunkuntype/version"
+require "shunkuntype/speed"
+require "shunkuntype/training"
+require "shunkuntype/finished_check"
+require "shunkuntype/plot"
+require "shunkuntype/mk_summary"
+require "shunkuntype/plot_data"
+require "shunkuntype/db"
+require "shunkuntype/merge"
+require 'systemu'
+
+module Shunkuntype
+  class Command
+
+    def self.run(argv=[])
+      print "Shunkuntype says 'Hello world'.\n"
+      new(argv).execute
+    end
+
+    def initialize(argv=[])
+      @argv = argv
+    end
+
+    def execute
+      DataFiles.prepare
+
+      @argv << '--help' if @argv.size==0
+      command_parser = OptionParser.new do |opt|
+        opt.on('-v', '--version','show program Version.') { |v|
+          opt.version = Shunkuntype::VERSION
+          puts opt.ver
+        }
+        opt.on('-c', '--check','Check speed') {|v| SpeedCheck.new }
+        opt.on('-d', '--drill [VAL]','one minute Drill [VAL]', Integer) {|v| Training.new(v) }
+        opt.on('-h', '--history','view training History') {|v| FinishCheck.new }
+        # Removed: plot, submit, review
+        # opt.on('-p', '--plot','Plot personal data') { |v| PlotPersonalData.new }
+        # opt.on('-s', '--submit','Submit data to dmz0') { |v| report_submit()}
+        opt.on('--reset','reset training data') { |v| reset_data()}
+        # opt.on('--review [FILE]','Review training, TAGs=html or hiki'){|v| data_viewing(v)}
+      end
+      command_parser.parse!(@argv)
+      exit
+    end
+
+    def reset_data
+      data_dir = File.join(ENV['HOME'], '.shunkuntype')
+      FileUtils.cd(data_dir)
+      begin
+        FileUtils.mkdir('old_data',:verbose => true)
+      rescue Errno::EEXIST
+        print "Directory 'old_data' exists at #{data_dir}.\n\n"
+      end
+      time=Time.now.strftime("%Y%m%d%H%M%S")
+      ['speed_data','training_data'].each{|file|
+        target = File.join(data_dir,'old_data',"#{file}_#{time}.txt")
+        FileUtils.mv(file+'.txt',target,:verbose=>true)
+      }
+    end
+
+    # Removed: report_submit, file_merge, data_viewing
+
+  end
+end
+````
+
+Similar code found with 1 license type
+
+daddygongon: plot, plot_data関連のファイルを削除
+
+GitHub Copilot: `plot` および `plot_data` 関連のファイルを削除するには、以下のファイルをプロジェクトから削除してください。
+
+- plot.rb
+- plot_data.rb
+
+また、shunkuntype.rb の require 行も既に削除済みなので追加の修正は不要です。
+
+**ターミナルでの削除コマンド例:**
+```sh
+rm lib/shunkuntype/plot.rb lib/shunkuntype/plot_data.rb
+```
+
+これで `plot` および `plot_data` 関連のファイルが削除されます。
+
+daddygongon: options.rbは使われていますか？
+
+GitHub Copilot: options.rb は現在の `shunkuntype.rb` には `require "shunkuntype/options"` の記述がなく、また `Options.parse!` も呼び出されていません。そのため、**現状では options.rb は使われていません**。
+
+不要であれば削除して問題ありません。
+
+daddygongon: 削除．
+
+GitHub Copilot: options.rb を削除してください。
+
+**ターミナルコマンド例:**
+```sh
+rm lib/shunkuntype/options.rb
+```
+
+これで削除完了です。
+
+daddygongon: nakata_plot.rbは使われていますか？不要なら削除
+
+GitHub Copilot: `nakata_plot.rb` について、`shunkuntype.rb` や他の require 行に `nakata_plot` の記述はありません。また、`OptionParser` のコマンドにも `nakata_plot` に関するものは見当たりません。
+
+**結論:**  
+`nakata_plot.rb` は現在使われていないため、不要です。削除して問題ありません。
+
+**削除コマンド例:**
+```sh
+rm lib/shunkuntype/nakata_plot.rb
+```
+
+daddygongon: gobara_plot.rbは使われていますか？不要なら削除
+
+GitHub Copilot: `gobara_plot.rb` も `shunkuntype.rb` や他の require 行に記載がなく、コマンドオプションにも関連が見当たりません。
+
+**結論:**  
+`gobara_plot.rb` は現在使われていないため、不要です。削除して問題ありません。
+
+**削除コマンド例:**
+```sh
+rm lib/shunkuntype/gobara_plot.rb
+```
+
+daddygongon: hosoi_plot, nakata_plotは使われていますか？不要なら削除．
+
+GitHub Copilot: `hosoi_plot.rb` および `nakata_plot.rb` は、`shunkuntype.rb` や他の require 行、コマンドオプションで参照されていません。
+
+**結論:**  
+両ファイルとも現在使われていないため、不要です。削除して問題ありません。
+
+**削除コマンド例:**
+```sh
+rm lib/shunkuntype/hosoi_plot.rb lib/shunkuntype/nakata_plot.rb
+```
+
+daddygongon: shunkuntypeに関連するlib内のファイルに対して，module Shunkuntypeは不要です．消しましょう．
+
+GitHub Copilot: ````ruby
+require 'optparse'
+require "shunkuntype/version"
+require "shunkuntype/speed"
+require "shunkuntype/training"
+require "shunkuntype/finished_check"
+require "shunkuntype/mk_summary"
+require "shunkuntype/db"
+require "shunkuntype/merge"
+require 'systemu'
+
+class Command
+
+  def self.run(argv=[])
+    print "Shunkuntype says 'Hello world'.\n"
+    new(argv).execute
+  end
+
+  def initialize(argv=[])
+    @argv = argv
+  end
+
+  def execute
+    DataFiles.prepare
+
+    @argv << '--help' if @argv.size==0
+    command_parser = OptionParser.new do |opt|
+      opt.on('-v', '--version','show program Version.') { |v|
+        opt.version = Shunkuntype::VERSION
+        puts opt.ver
+      }
+      opt.on('-c', '--check','Check speed') {|v| SpeedCheck.new }
+      opt.on('-d', '--drill [VAL]','one minute Drill [VAL]', Integer) {|v| Training.new(v) }
+      opt.on('-h', '--history','view training History') {|v| FinishCheck.new }
+      opt.on('--reset','reset training data') { |v| reset_data()}
+    end
+    command_parser.parse!(@argv)
+    exit
+  end
+
+  def reset_data
+    data_dir = File.join(ENV['HOME'], '.shunkuntype')
+    FileUtils.cd(data_dir)
+    begin
+      FileUtils.mkdir('old_data',:verbose => true)
+    rescue Errno::EEXIST
+      print "Directory 'old_data' exists at #{data_dir}.\n\n"
+    end
+    time=Time.now.strftime("%Y%m%d%H%M%S")
+    ['speed_data','training_data'].each{|file|
+      target = File.join(data_dir,'old_data',"#{file}_#{time}.txt")
+      FileUtils.mv(file+'.txt',target,:verbose=>true)
+    }
+  end
+end
+````
+
+Similar code found with 1 license type
+
+daddygongon: Module Shunkuntypeを無くしたので，呼び出しを調整
+
+GitHub Copilot: ````ruby
+#!/usr/bin/env ruby
+
+require "shunkuntype"
+
+Command.run(ARGV)
+````
+
+````ruby
+require 'fileutils'
+require 'tmpdir'
+
+VERSION = "1.0.16"
+data_dir = File.join(ENV['HOME'], '.shunkuntype')
+#  SPEED_FILE="./shunkuntype_speed_data.txt"
+SPEED_FILE = File.join(data_dir, "speed_data.txt")
+#  TRAIN_FILE="./shunkuntype_training_data.txt"
+TRAIN_FILE = File.join(data_dir, "training_data.txt")
+SERVER_FILE = File.join(data_dir, "server_data.txt")
+````
+
+Similar code found with 1 license type
