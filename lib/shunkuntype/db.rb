@@ -14,7 +14,7 @@ module DataFiles
   def self.create_file_if_not_exists(path)
     create_file_path(path)
 
-    return if File::exists?(path)
+    return if File::exist?(path)
     create_data_files
   end
 
