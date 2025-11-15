@@ -25,22 +25,11 @@ Usage: shunkuntype [options]
     -v, --version                    show program Version.
     -c, --check                      Check speed
     -d, --drill [VAL]                one minute Drill [VAL]
-    -h, --history                    view training History
-    -p, --plot                       Plot personal data
-    -s, --submit                     Submit data to dmz0
-        --review [VALUE]             Review training, VALUE=html or hiki
+    -h, --help                       show help message
+    -l, --log                        view training Log
 ```
 For the first time, shunkun makes .shunkuntype directory on the home dir, 
-and put three data files(training, speed, server).
-The training and speed data will be sent to the server, when --submit.
-The --review will get the data download, and show the training and speed data in hiki or html formats, 
-where the png files created by gnuplot.
-
-For activating server all training member has ssh access, and the write permission on the directory.
-The format of the server_data.txt is as follows:
-```
- [login_name]\@[server_name]:directory
-```
+and put two data files(training, speed).
 
 ## Development
 
