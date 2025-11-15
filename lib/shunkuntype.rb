@@ -1,16 +1,24 @@
 require 'optparse'
-require "shunkuntype/version"
 require "shunkuntype/speed"
 require "shunkuntype/training"
 require "shunkuntype/finished_check"
 require "shunkuntype/db"
 require 'systemu'
+require "shunkuntype/version"
 
 module Shunkuntype
-  VERSION = "1.0.16"
   DATA_DIR = File.join(ENV['HOME'], '.shunkuntype')
   TRAINING_FILE = File.join(DATA_DIR, "training_data.txt")
   SPEED_FILE = File.join(DATA_DIR, "speed_data.txt")
+
+  def self.print_keyboard
+    content = <<-EOF
+ q \\ w \\ e \\ r t \\ y u \\ i \\ o \\ p
+  a \\ s \\ d \\ f g \\ h j \\ k \\ l \\ ; enter
+sh z \\ x \\ c \\ v b \\ n m \\ , \\\ . \\  shift
+EOF
+    print content
+  end
 end
 
 class Command

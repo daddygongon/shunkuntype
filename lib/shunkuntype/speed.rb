@@ -1,15 +1,7 @@
+require "shunkuntype"
+
 class SpeedCheck
   attr_reader :number, :period
-
-  # print key positions
-  def print_keyboard
-    content = <<-EOF
- q \\ w \\ e \\ r t \\ y u \\ i \\ o \\ p
-  a \\ s \\ d \\ f g \\ h j \\ k \\ l \\ ; enter
-sh z \\ x \\ c \\ v b \\ n m \\ , \\\ . \\  shift
-EOF
-    print content
-  end
 
   def initialize
     @number = 20 #default 20
@@ -25,6 +17,10 @@ EOF
     keep_record(t0, t1, count)
   end
 
+  def print_keyboard
+    Shunkuntype.print_keyboard
+  end
+
   def check_data_files
     begin
       file=open(Shunkuntype::SPEED_FILE,"r")
@@ -36,6 +32,7 @@ EOF
       exit
     end
   end
+  
   def mk_random_words
     data=[]
     data_dir=File.expand_path('../../../lib/data', __FILE__)

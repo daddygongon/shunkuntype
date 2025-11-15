@@ -30,7 +30,6 @@ class FinishCheck
       finish[0] << step
     }
 
-#    text=[['Basic','minute'],['GerardStrong','size']]
     text=[['Basic','minute']]
     1.times{|i|
       print display(STEPS[i],finish[i],text[i][0],text[i][1])

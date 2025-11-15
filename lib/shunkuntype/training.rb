@@ -1,3 +1,5 @@
+require "shunkuntype"
+
 class Training
   def initialize(val_i)
     val_i ||= 47
@@ -12,8 +14,11 @@ class Training
     print_keyboard
     start_time,data = init_proc(file_name)
     return if start_time.nil?
-    #size_training(file_name,data,start_time)
     time_training(base_name,data,start_time)
+  end
+
+  def print_keyboard
+    Shunkuntype.print_keyboard
   end
 
   # count correct spelling
@@ -38,16 +43,6 @@ class Training
       puts "\a Time up. Type return-key to finish.."
       @time_flag=false
     end
-  end
-
-  # print key positions
-  def print_keyboard
-    content = <<-EOF
- q \\ w \\ e \\ r t \\ y u \\ i \\ o \\ p
-  a \\ s \\ d \\ f g \\ h j \\ k \\ l \\ ; enter
-sh z \\ x \\ c \\ v b \\ n m \\ , \\\ . \\  shift
-EOF
-    print content
   end
 
   def init_proc(file_name)
@@ -82,12 +77,6 @@ EOF
       line = line.chomp
       counter(sentence, line)
     end
-  end
-
-  def size_training(file_name,data,start_time)
-    type_loop(data)
-    exit_proc(start_time,file_name,(Time.now-start_time).to_i)
-    return
   end
 
   def time_training(base_name,data,start_time)
