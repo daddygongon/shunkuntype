@@ -3,7 +3,6 @@ require "shunkuntype/version"
 require "shunkuntype/speed"
 require "shunkuntype/training"
 require "shunkuntype/finished_check"
-require "shunkuntype/mk_summary"
 require "shunkuntype/db"
 require 'systemu'
 
