@@ -10,7 +10,8 @@ class Training
 
     @time_flag=true
     print_keyboard
-    start_time,data=init_proc(file_name)
+    start_time,data = init_proc(file_name)
+    return if start_time.nil?
     #size_training(file_name,data,start_time)
     time_training(base_name,data,start_time)
   end
@@ -53,14 +54,21 @@ EOF
     data=File.readlines(file_name)
     data.each{|word| print word }
     print "\nRepeat above sentences. Type return-key to start."
-#    p ''
     line=STDIN.gets
+    if line.nil?
+      # 入力がなければnilを返して呼び出し元で処理
+      return nil, data
+    end
+    line = line.chomp
     start_time = Time.now
-    return start_time,data
+    return start_time, data
   end
 
-  def keep_record(start_time,file_name,period)
-    data_file=open(Shunkuntype::TRAIN_FILE,"a")
+  def keep_record(start_time, file_name, period)
+    # テスト環境なら記録しない
+    return if ENV['TEST'] == 'true'
+
+    data_file = open(Shunkuntype::TRAINING_FILE, "a+")
     data_file << "#{start_time},#{file_name},#{@counter},#{period}\n"
     exit
   end
@@ -69,9 +77,10 @@ EOF
     data.each do |sentence|
       break if @time_flag == false
       puts sentence
-#      p ''
-      line=STDIN.gets.chomp
-      counter(sentence,line)
+      line = STDIN.gets
+      break if line.nil?
+      line = line.chomp
+      counter(sentence, line)
     end
   end
 

@@ -28,20 +28,13 @@ module DataFiles
       print "moving ./speed_data.txt #{Shunkuntype::SPEED_FILE}.\n"
     end
     if File::exist?("./training_data.txt") then
-      system "mv ./training_data.txt #{Shunkuntype::TRAIN_FILE}"
-      print "moving ./training_data.txt #{Shunkuntype::TRAIN_FILE}.\n"
+      system "mv ./training_data.txt #{Shunkuntype::TRAINING_FILE}"
+      print "moving ./training_data.txt #{Shunkuntype::TRAINING_FILE}.\n"
+    if File::exist?(Shunkuntype::TRAINING_FILE) then
+      print "#{Shunkuntype::TRAINING_FILE} exits.\n"
+      File::open(Shunkuntype::TRAINING_FILE,'a')
+      print "make #{Shunkuntype::TRAINING_FILE}\n"
     end
-    if File::exist?(Shunkuntype::SPEED_FILE) then
-      print "#{Shunkuntype::SPEED_FILE} exits.\n"
-    else
-      File::open(Shunkuntype::SPEED_FILE,'a')
-      print "make #{Shunkuntype::SPEED_FILE}\n"
-    end
-    if File::exist?(Shunkuntype::TRAIN_FILE) then
-      print "#{Shunkuntype::TRAIN_FILE} exits.\n"
-    else
-      File::open(Shunkuntype::TRAIN_FILE,'a')
-      print "make #{Shunkuntype::TRAIN_FILE}\n"
     end
   end
   private_class_method :create_file_if_not_exists, :create_file_path, :create_data_files

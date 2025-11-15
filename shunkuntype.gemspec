@@ -31,5 +31,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "gnuplot"
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "minitest"
+  spec.add_development_dependency "minitest-reporters"
 end

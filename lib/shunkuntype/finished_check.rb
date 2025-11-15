@@ -24,7 +24,7 @@ class FinishCheck
          ]]
   def initialize
     finish = [[],[]]
-    File.open(Shunkuntype::TRAIN_FILE,'r').each{|line|
+    File.open(Shunkuntype::TRAINING_FILE,'r').each{|line|
       name = line.chomp.split(',')[1]
       step = name.scan(/\d+/)[0].to_i
       finish[0] << step

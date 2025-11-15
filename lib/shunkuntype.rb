@@ -8,6 +8,11 @@ require "shunkuntype/db"
 require "shunkuntype/merge"
 require 'systemu'
 
+module Shunkuntype
+  TRAINING_FILE = File.expand_path('../../../training_data.txt', __FILE__)
+  SPEED_FILE = File.expand_path('../../../speed_data.txt', __FILE__)
+end
+
 class Command
 
   def self.run(argv=[])
@@ -30,25 +35,10 @@ class Command
       }
       opt.on('-c', '--check','Check speed') {|v| SpeedCheck.new }
       opt.on('-d', '--drill [VAL]','one minute Drill [VAL]', Integer) {|v| Training.new(v) }
-      opt.on('-h', '--history','view training History') {|v| FinishCheck.new }
-      opt.on('--reset','reset training data') { |v| reset_data()}
+      opt.on('-h', '--help','show help message') { puts opt; exit }
+      opt.on('-l','--log','view training log') {|v| FinishCheck.new }
     end
     command_parser.parse!(@argv)
     exit
-  end
-
-  def reset_data
-    data_dir = File.join(ENV['HOME'], '.shunkuntype')
-    FileUtils.cd(data_dir)
-    begin
-      FileUtils.mkdir('old_data',:verbose => true)
-    rescue Errno::EEXIST
-      print "Directory 'old_data' exists at #{data_dir}.\n\n"
-    end
-    time=Time.now.strftime("%Y%m%d%H%M%S")
-    ['speed_data','training_data'].each{|file|
-      target = File.join(data_dir,'old_data',"#{file}_#{time}.txt")
-      FileUtils.mv(file+'.txt',target,:verbose=>true)
-    }
   end
 end

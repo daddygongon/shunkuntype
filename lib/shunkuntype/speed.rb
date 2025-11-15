@@ -1,4 +1,3 @@
-
 class SpeedCheck
   attr_reader :number, :period
 
@@ -17,8 +16,13 @@ EOF
     @period = 60
     check_data_files
     data = mk_random_words
-    t0,t1,count = exec_speed_check(data)
-    keep_record(t0,t1,count)
+    t0, t1, count = exec_speed_check(data)
+    # ここでnilチェック
+    if t0.nil? || t1.nil?
+      puts "Speed check was interrupted or no input was given."
+      return
+    end
+    keep_record(t0, t1, count)
   end
 
   def check_data_files
@@ -50,36 +54,44 @@ EOF
     print "\n\n"+number.to_s+" words should be cleared."
     print "\nType return-key to start."
     p ''
-    line=$stdin.gets
+    line = $stdin.gets
+    return [nil, nil, nil] if line.nil?  # breakの代わりにreturnで早期リターン
+    line = line.chomp
 
-    t0=Time.now
-    count=0
+    t0 = Time.now
+    count = 0
     @number.times do |i|
       print_keyboard()
       puts (i+1).to_s
       word = data[i]
-      count+=word.length
-      while line!=word do
+      count += word.length
+      while line != word do
         puts word
         p ''
-        line=$stdin.gets.chomp
+        line = $stdin.gets
+        return [t0, Time.now, count] if line.nil?  # ここもnilチェック
+        line = line.chomp
       end
     end
-    t1=Time.now
-    return t0,t1,count
+    t1 = Time.now
+    return t0, t1, count
   end
 
-  def keep_record(t0,t1,count)
-    statement = t0.to_s+","
-    statement << @number.to_s+","
-    statement << (t1-t0).to_s+","
-    icount=@period/(t1-t0)*count
-    statement << icount.to_s+"\n"
-    data_file=open(Shunkuntype::SPEED_FILE,"a+")
+  def keep_record(t0, t1, count)
+    return if t0.nil? || t1.nil?
+    # テスト環境なら記録しない
+    return if ENV['TEST'] == 'true'
+
+    statement = t0.to_s + ","
+    statement << @number.to_s + ","
+    statement << (t1 - t0).to_s + ","
+    icount = @period / (t1 - t0) * count
+    statement << icount.to_s + "\n"
+    data_file = open(Shunkuntype::SPEED_FILE, "a+")
     data_file << statement
     p statement
 
-    printf("%5.3f sec\n",Time.now-t0)
-    printf("%4d characters.\n",icount)
+    printf("%5.3f sec\n", Time.now - t0)
+    printf("%4d characters.\n", icount)
   end
 end

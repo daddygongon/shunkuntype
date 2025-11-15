@@ -3,29 +3,23 @@ PATH
   specs:
     shunkuntype (1.0.16)
       gnuplot
-      systemu (~> 2.5.1)
+      systemu
 
 GEM
   remote: https://rubygems.org/
   specs:
-    diff-lcs (1.5.1)
+    ansi (1.5.0)
+    builder (3.3.0)
     gnuplot (2.6.2)
+    minitest (5.26.1)
+    minitest-reporters (1.7.1)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
     rake (12.3.3)
-    rspec (3.13.0)
-      rspec-core (~> 3.13.0)
-      rspec-expectations (~> 3.13.0)
-      rspec-mocks (~> 3.13.0)
-    rspec-core (3.13.0)
-      rspec-support (~> 3.13.0)
-    rspec-expectations (3.13.0)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.13.0)
-    rspec-mocks (3.13.0)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.13.0)
-    rspec-support (3.13.1)
+    ruby-progressbar (1.13.0)
     systemu (2.5.2)
-    yard (0.9.37)
 
 PLATFORMS
   arm64-darwin-20
@@ -33,10 +27,10 @@ PLATFORMS
 
 DEPENDENCIES
   bundler
-  rake (~> 12.3.3)
-  rspec
+  minitest
+  minitest-reporters
+  rake
   shunkuntype!
-  yard (~> 0.9.11)
 
 BUNDLED WITH
    2.5.21
