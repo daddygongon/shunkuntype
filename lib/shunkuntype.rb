@@ -5,12 +5,13 @@ require "shunkuntype/training"
 require "shunkuntype/finished_check"
 require "shunkuntype/mk_summary"
 require "shunkuntype/db"
-require "shunkuntype/merge"
 require 'systemu'
 
 module Shunkuntype
-  TRAINING_FILE = File.expand_path('../../../training_data.txt', __FILE__)
-  SPEED_FILE = File.expand_path('../../../speed_data.txt', __FILE__)
+  VERSION = "1.0.16"
+  DATA_DIR = File.join(ENV['HOME'], '.shunkuntype')
+  TRAINING_FILE = File.join(DATA_DIR, "training_data.txt")
+  SPEED_FILE = File.join(DATA_DIR, "speed_data.txt")
 end
 
 class Command
