@@ -1,4 +1,5 @@
 require "shunkuntype"
+require_relative "db"  # 追加
 
 class SpeedCheck
   attr_reader :number, :period
@@ -22,17 +23,24 @@ class SpeedCheck
   end
 
   def check_data_files
+    retried = false
     begin
-      file=open(Shunkuntype::SPEED_FILE,"r")
+      file = open(Shunkuntype::SPEED_FILE, "r")
       if file
         puts "#{Shunkuntype::SPEED_FILE} opened succcessfully"
       end
     rescue
-      puts "#{Shunkuntype::SPEED_FILE} does not exist in this directory. --init or try in another dir."
-      exit
+      if retried
+        puts "Failed to create #{Shunkuntype::SPEED_FILE}. Please check permissions."
+        exit 1
+      end
+      puts "#{Shunkuntype::SPEED_FILE} does not exist in this directory. Creating required files..."
+      DataFiles.prepare
+      retried = true
+      retry
     end
   end
-  
+
   def mk_random_words
     data=[]
     data_dir=File.expand_path('../../../lib/data', __FILE__)
